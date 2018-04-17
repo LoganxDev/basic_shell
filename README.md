@@ -1,3 +1,3 @@
 # Basic Shell
 
-To run it you just need to pull the project and run `make`
+To run it pull the repo and run `make`
