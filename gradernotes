@@ -1,0 +1,14 @@
+Logan Lasiter - cssc0049
+CS570 FA 2017
+Professor Carroll
+
+Program 4
+
+Sources: https://www.youtube.com/watch?v=uHH7nHkgZ4w - Pipe() tutorial for linux 
+https://www.youtube.com/watch?v=PwxTbksJ2fo - Understanding fork() system call for new process creation
+https://stackoverflow.com/questions/4629643/implementing-a-unix-shell-in-c-check-if-file-is-executable - Found out how to check execution bits
+https://stackoverflow.com/questions/3984948/how-to-figure-out-if-a-file-is-a-link - Determining whether a file is a symlink or not
+
+Known Bugs: none
+
+Design Decisions: For the commands on this program I decided to have a second array because of my limited skill in C and this way made the most sense to me. What I started by inserting a NULL into my args (newargv) array for every pipe seen. This allowed me to seperate commands into their respective sections. When going through the for loop I created for multiple pipes I would call a function that would fill a temporary array with the command needed. As for the piping itself I chose to rewrite the piping code so that it would be all contained within the for loop. Inside the for loop I for a child off of the most recent child and within my child check if it is the last command to be run I dup2 the stdout and exec the command, otherwise I create a new pipe and continue in the for loop. Inside the parent scope I check if it is a middle child, if it is I dup2 stdout and stdin and then exec the command. If it is not a middle child I only dup2 the stdin and exec the last command to be executed. The exec command was a simple calling of the execvp function at the beginning of the for loop in main to execute the command immediately. For ls-F I used lstat() to find out if the current item being pointed at contianed info for a link and S_ISLNK to confirm there was still an active symlink. For files with execution bits set I use the bitwise operator '&' with the current item being pointed at and 0111 to determine whether the execution bits were set.
